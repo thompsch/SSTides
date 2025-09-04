@@ -12,5 +12,8 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
 	}
-	
+	private async void OnButtonClicked(object sender, EventArgs e)
+	{
+		await Navigation.PushModalAsync(new LocationSelector());
+	}
 }

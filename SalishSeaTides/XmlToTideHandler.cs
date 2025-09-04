@@ -1,15 +1,14 @@
 using System.Xml.Serialization;
 using SalishSeaTides.Models;
-using UserNotifications;
 
 namespace SalishSeaTides;
 
 public class XmlToTideHandler
 {
-    public static async Task<TideModel> GetAllTides()
+    public static async Task<TideModel> GetAllTides(int selectedStationID)
     {
         var year = DateTime.Now.Year;
-        var fileName = "9447856_2025.xml"; //$"{year}.xml";
+        var fileName = $"{selectedStationID}_2025.xml";
         await using var stream = await FileSystem.OpenAppPackageFileAsync(fileName);
         using var reader = new StreamReader(stream);
         var serializer = new XmlSerializer(typeof(TideModel));

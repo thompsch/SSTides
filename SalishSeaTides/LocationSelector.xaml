@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:map="clr-namespace:Syncfusion.Maui.Maps;assembly=Syncfusion.Maui.Maps"
+             x:Class="SalishSeaTides.LocationSelector">
+    <ContentPage.Content>
+
+
+         <!--   <VerticalStackLayout>
+                <AbsoluteLayout HeightRequest="200" BackgroundColor="LightGray">
+                    <Label Text="Overlay Text" 
+                           AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize" 
+                           AbsoluteLayout.LayoutFlags="PositionProportional" 
+                           TextColor="Red" />
+                    <Button Text="Absolute Button" 
+                            AbsoluteLayout.LayoutBounds="10,10,100,50" 
+                            AbsoluteLayout.LayoutFlags="None" />
+                </AbsoluteLayout>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"> </ColumnDefinition>
+                    <ColumnDefinition Width="*"> </ColumnDefinition>
+                    <ColumnDefinition Width="*"> </ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+            
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Padding="10" Text="Pick a tide location on the map or from the menu." HorizontalTextAlignment="Center"></Label>
+             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Fill">
+                 <Image Source="salishseamap.png"></Image>
+             </Border>
+                
+            <Picker Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Title="Location"></Picker>
+            </Grid>
+           
+            <Border VerticalOptions="EndAndExpand">
+                <Button Text="Cancel" Clicked="CancelButton_OnClicked"></Button>
+            </Border>
+            
+           
+        </VerticalStackLayout>-->
+         <AbsoluteLayout BackgroundColor="LightGray">
+
+             <!-- Position and size the VerticalStackLayout within the AbsoluteLayout -->
+             <VerticalStackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                  AbsoluteLayout.LayoutFlags="All"
+                                  BackgroundColor="White"
+                                  Spacing="10"
+                                  Padding="20">
+                 <Grid>
+                 <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*"> </ColumnDefinition>
+                     <ColumnDefinition Width="*"> </ColumnDefinition>
+                     <ColumnDefinition Width="*"> </ColumnDefinition>
+                 </Grid.ColumnDefinitions>
+                 <Grid.RowDefinitions>
+                     <RowDefinition></RowDefinition>
+                     <RowDefinition></RowDefinition>
+                     <RowDefinition></RowDefinition>
+                     <RowDefinition></RowDefinition>
+                 </Grid.RowDefinitions>
+            
+                 <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Padding="10" Text="Pick a tide location on the map or from the menu." HorizontalTextAlignment="Center"></Label>
+                 <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Fill">
+                     <Image Source="salishseamap.png"></Image>
+                 </Border>
+                
+                 <Picker Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Title="Location"></Picker>
+                 </Grid>
+             </VerticalStackLayout>
+        <Button AbsoluteLayout.LayoutBounds="0.46,0.35,10,10"
+               AbsoluteLayout.LayoutFlags="PositionProportional" BackgroundColor="Red"/>
+         </AbsoluteLayout>
+
+    </ContentPage.Content>
+</ContentPage>

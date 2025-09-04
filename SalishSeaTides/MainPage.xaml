@@ -9,7 +9,7 @@
         <model:TideViewModel/>
     </ContentPage.BindingContext>
     <VerticalStackLayout>
-        <Label HorizontalTextAlignment="Center" Text="{Binding StationName}" Padding="0,0,0,10"></Label>
+        <Button Text="{Binding StationName}" Padding="0,0,0,10" Clicked="OnButtonClicked"></Button>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*" /> 
