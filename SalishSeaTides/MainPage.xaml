@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:model="clr-namespace:SalishSeaTides.Models"
+             x:Class="SalishSeaTides.MainPage">
+
+    <ContentPage.BindingContext>
+        <model:TideViewModel/>
+    </ContentPage.BindingContext>
+    <VerticalStackLayout>
+        <Label HorizontalTextAlignment="Center" Text="{Binding StationName}" Padding="0,0,0,10"></Label>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" /> 
+                <RowDefinition Height="*" /> 
+                <RowDefinition Height="3*" /> 
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <chart:SfCartesianChart Grid.Row="0" Grid.ColumnSpan="2">
+                
+                <chart:SfCartesianChart.XAxes>
+                    <!-- X-Axis Design-->
+                    <chart:DateTimeAxis CrossesAt="-4"  Interval="1" IntervalType="Days" >
+                        
+                        <chart:DateTimeAxis.LabelStyle>
+                            <chart:ChartAxisLabelStyle LabelFormat="M/d" TextColor="Black" FontAttributes="Bold"/>
+                        </chart:DateTimeAxis.LabelStyle>
+                        <chart:DateTimeAxis.PlotBands>
+                                <chart:DateTimePlotBandCollection>
+                                    <chart:DateTimePlotBand Start="1/1/2025"
+                                                            IsRepeatable="True"
+                                                            SizeType="Auto"
+                                                            Size="24"
+                                                            RepeatEvery="2"
+                                                            RepeatEveryType="Days"
+                                                            Fill="#EEE"/>
+                                </chart:DateTimePlotBandCollection>
+                        </chart:DateTimeAxis.PlotBands>
+                    </chart:DateTimeAxis>
+                </chart:SfCartesianChart.XAxes>
+                <!-- End X-Axis Design-->
+                <!-- Y-Axis Design-->
+                <chart:SfCartesianChart.YAxes>
+                    <chart:NumericalAxis/>
+                </chart:SfCartesianChart.YAxes> 
+                <!-- End Y-Axis Design-->
+                <!-- Series -->
+                <chart:SplineSeries ItemsSource="{Binding SelectedTides}"
+                                        XBindingPath="TideDateTime"
+                                        YBindingPath="Height"
+                                        StrokeWidth="5"
+                                        ShowDataLabels="True">
+                    <chart:SplineSeries.DataLabelSettings>
+                        <chart:CartesianDataLabelSettings >
+                            <chart:CartesianDataLabelSettings.LabelStyle>
+                                <chart:ChartDataLabelStyle TextColor="#000" Background="White" FontSize="10"  >
+                                </chart:ChartDataLabelStyle>
+                            </chart:CartesianDataLabelSettings.LabelStyle> 
+                        </chart:CartesianDataLabelSettings>
+                    </chart:SplineSeries.DataLabelSettings> </chart:SplineSeries>
+                <chart:SplineAreaSeries ItemsSource="{Binding SelectedTides}"
+                                        XBindingPath="TideDateTime"
+                                        YBindingPath="Height"
+                                        ShowMarkers="False"
+                                        ShowDataLabels="False">
+                    <chart:AreaSeries.MarkerSettings>
+                        <chart:ChartMarkerSettings Type="Circle"
+                                                   Fill="#1166aa"
+                                                   Stroke="White"
+                                                   StrokeWidth="1"
+                                                   Height="5"
+                                                   Width="5"/>
+                    </chart:AreaSeries.MarkerSettings>
+                    <chart:AreaSeries.DataLabelSettings>
+                            <chart:CartesianDataLabelSettings>
+                               
+                            </chart:CartesianDataLabelSettings>
+                    </chart:AreaSeries.DataLabelSettings>
+                    
+                    <chart:SplineAreaSeries.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#1166aa" Offset="0" />
+                            <GradientStop Color="#fff" Offset="1" />
+                        </LinearGradientBrush>
+                    </chart:SplineAreaSeries.Fill> 
+                    
+                </chart:SplineAreaSeries>
+                
+                <chart:SfCartesianChart.Annotations>
+                    <chart:VerticalLineAnnotation
+                        X1 ="{Binding SelectedDateTime}"
+                        Stroke="Purple"
+                        StrokeDashArray="2,2"
+                        StrokeWidth="1" />
+                </chart:SfCartesianChart.Annotations>
+                
+            </chart:SfCartesianChart>
+    
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="100" Padding="2">
+            <CollectionView ItemsSource="{Binding SelectedTides}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding TideType}" Grid.Row="0" Grid.Column="0" />
+                            <Label Text="{Binding ShortDate}" Grid.Row="0" Grid.Column="1" />
+                            <Label Text="{Binding Height}" Grid.Row="0" Grid.Column="2" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            </Border>
+            <Border Grid.Column="2" Grid.Row="2" Padding="20">
+                <Label Text="FOO"></Label>
+            </Border>
+        </Grid>
+        <Label x:DataType="model:TideViewModel" Text="{Binding Tides.Count}"/>
+        <ListView ItemsSource="{Binding Tides}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:Tide">
+                    <ViewCell>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding Height}"
+                                   FontAttributes="Bold" />
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   Text="{Binding TideDateTime}"
+                                   FontAttributes="Italic"
+                                   VerticalOptions="End" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </VerticalStackLayout>
+</ContentPage>
