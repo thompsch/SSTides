@@ -7,7 +7,7 @@ namespace SalishSeaTides.Models;
 public class TideViewModel : INotifyPropertyChanged
 {
     public DateTime SelectedDateTime { get; set; } = DateTime.Now;
-    public Station SelectedStation { get; set; } = Station.Stations.First(s => s.StationId == 9447856);
+    public static Station SelectedStation { get; set; } = Station.Stations.First(s => s.StationId == 9447856);
 
     private List<Tide> _tides = new List<Tide>();
     private TideModel allTides = new TideModel();
