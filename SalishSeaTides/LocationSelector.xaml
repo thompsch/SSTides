@@ -21,7 +21,7 @@
             
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Padding="10" Text="Pick a tide location on the map or from the menu." HorizontalTextAlignment="Center"></Label>
              <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Fill">
-                 <Image Source="salishseamap.png">
+                 <Image Source="salishseatidelocations.png">
                      <Image.GestureRecognizers>
                          <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"/>
                      </Image.GestureRecognizers>

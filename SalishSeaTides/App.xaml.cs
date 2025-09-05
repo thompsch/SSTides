@@ -1,4 +1,7 @@
-﻿namespace SalishSeaTides;
+﻿using Microsoft.Maui;
+using Microsoft.Maui.Controls;
+
+namespace SalishSeaTides;
 
 public partial class App : Application
 {

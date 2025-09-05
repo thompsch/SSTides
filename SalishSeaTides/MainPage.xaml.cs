@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Xml.Serialization;
+using Microsoft.Maui.Controls;
 using SalishSeaTides.Models;
 
 namespace SalishSeaTides;
