@@ -9,7 +9,7 @@
         <model:TideViewModel/>
     </ContentPage.BindingContext>
     <VerticalStackLayout>
-        <Button Text="{Binding StationName}" Padding="0,0,0,10" Clicked="OnButtonClicked"></Button>
+        <Button Text="{Binding SelectedStation.Name}" Padding="0,0,0,10" Clicked="OnButtonClicked"></Button>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*" /> 

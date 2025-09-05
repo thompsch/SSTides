@@ -11,9 +11,11 @@ namespace SalishSeaTides;
 public partial class LocationSelector : ContentPage
 {
     public Dictionary<Station, Tuple<double, double>> StationLocationOnMap;
-
-    public LocationSelector()
+    private TideViewModel _viewModel;
+    
+    public LocationSelector(TideViewModel viewModel)
     {
+        _viewModel = viewModel;
         InitializeComponent();
         GenerateStationList();
     }
@@ -31,7 +33,8 @@ public partial class LocationSelector : ContentPage
         var x = position.Value.X;
         var y = position.Value.Y;
         // Console.WriteLine($"{x},{y}");
-        TideViewModel.SelectedStation = FindNearestStation(x, y);
+        _viewModel.SelectedStation = FindNearestStation(x, y);
+       
         await Navigation.PopModalAsync();
     }
 
