@@ -10,9 +10,10 @@ namespace SalishSeaTides.Models;
 
 public partial class TideViewModel : ObservableObject
 {
-    public DateTime SelectedDateTime { get; set; } = DateTime.Now;
+    [ObservableProperty] 
+    private DateTime selectedDateTime = DateTime.Now;
 
-    [ObservableProperty] public Station selectedStation;
+    [ObservableProperty] private Station selectedStation;
 
     private List<Tide> _tides = new List<Tide>();
     private TideModel _tideModel = new TideModel();
