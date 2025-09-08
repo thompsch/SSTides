@@ -15,20 +15,20 @@ public partial class MainPage : ContentPage
 	}
 	private async void OnButtonClicked(object sender, EventArgs e)
 	{
-		var tideViewModel = (TideViewModel)BindingContext;
-		await Navigation.PushModalAsync(new LocationSelector(tideViewModel));
+		var _tideViewModel = (TideViewModel)BindingContext;
+		await Navigation.PushModalAsync(new LocationSelector(_tideViewModel));
 	}
 
 	private void SwipeGestureRecognizer_OnSwipedLeft(object? sender, SwipedEventArgs e)
 	{
 		//get next tides
-		var tideViewModel = (TideViewModel)BindingContext;
-		tideViewModel.SelectedDateTime = tideViewModel.SelectedDateTime.AddDays(2);
+		var _tideViewModel = (TideViewModel)BindingContext;
+		_tideViewModel.SelectedDateTime = _tideViewModel.SelectedDateTime.AddDays(2);
 	}
 	private void SwipeGestureRecognizer_OnSwipedRight(object? sender, SwipedEventArgs e)
 	{
 		//get previous tides
-		var tideViewModel = (TideViewModel)BindingContext;
-		tideViewModel.SelectedDateTime = tideViewModel.SelectedDateTime.AddDays(-2);
+		var _tideViewModel = (TideViewModel)BindingContext;
+		_tideViewModel.SelectedDateTime = _tideViewModel.SelectedDateTime.AddDays(-2);
 	}
 }

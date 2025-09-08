@@ -5,7 +5,7 @@ namespace SalishSeaTides;
 
 public class XmlToTideHandler
 {
-    public static async Task<TideModel> GetAllTides(int selectedStationID)
+    public static async Task<TideModel> GetAllTides(string selectedStationID)
     {
         var year = DateTime.Now.Year;
         var fileName = $"{selectedStationID}_2025.xml";

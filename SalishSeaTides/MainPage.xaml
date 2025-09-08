@@ -28,8 +28,7 @@
                 <chart:SfCartesianChart Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#000000DD">
                     <chart:SfCartesianChart.XAxes>
                     <!-- X-Axis Design-->
-                    <chart:DateTimeAxis CrossesAt="-4"  Interval="1" IntervalType="Days">
-
+                    <chart:DateTimeAxis CrossesAt="-4.2" Interval="1" IntervalType="Days">
                         <chart:DateTimeAxis.LabelStyle>
                             <chart:ChartAxisLabelStyle Margin="0,7,0,0" LabelFormat="M/d" TextColor="Black" FontAttributes="Bold"/>
                         </chart:DateTimeAxis.LabelStyle>
@@ -49,7 +48,7 @@
                 <!-- End X-Axis Design-->
                 <!-- Y-Axis Design-->
                 <chart:SfCartesianChart.YAxes>
-                <chart:NumericalAxis>
+                <chart:NumericalAxis Minimum="-5">
                     <chart:NumericalAxis.MajorGridLineStyle>
                     <chart:ChartLineStyle Stroke="#999999"
                                           StrokeWidth="1"/>
@@ -125,7 +124,8 @@
             </CollectionView>
             </Border>
             <Border Grid.Column="2" Grid.Row="2" Padding="20">
-                <Label Text="FOO"></Label>
+                <DatePicker Date="{Binding SelectedDateTime}" ></DatePicker>
+
             </Border>
         </Grid>
         <ListView ItemsSource="{Binding Tides}">
