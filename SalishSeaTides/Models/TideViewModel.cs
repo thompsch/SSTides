@@ -47,6 +47,7 @@ public partial class TideViewModel : ObservableObject
                 _tides = new List<Tide>();
                 _tideModel = XmlToTideHandler.GetAllTides(SelectedStation.StationId).Result;
 
+                // _tideModel can be null despite Rider information
                 if (_tideModel == null)
                 {
                     return;
@@ -76,7 +77,7 @@ public partial class TideViewModel : ObservableObject
             DateTime tideDateTime = DateTime.ParseExact($"{item.Date}T{time}", format, null);
 
             var newTide = new Tide(item.PredInFt, tideDateTime, item.HighLow);
-            newTide.ShortDate = $"{item.Day},{item.Date.Substring(5)} {item.Time}";
+            newTide.ShortDate = $"{item.Day}, {item.Date.Substring(5)} {item.Time}";
 
 
             _tides.Add(newTide);

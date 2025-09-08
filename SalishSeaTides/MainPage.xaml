@@ -17,9 +17,9 @@
         <Button Text="{Binding SelectedStation.Name}" Margin="10,10,10,10" Clicked="OnButtonClicked"></Button>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="3*" /> 
-                <RowDefinition Height="*" /> 
-                <RowDefinition Height="3*" /> 
+                <RowDefinition Height="Auto" /> 
+                <RowDefinition Height="1*" /> 
+                <RowDefinition Height="Auto" /> 
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -108,7 +108,6 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.RowDefinitions>
-
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
