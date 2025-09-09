@@ -11,12 +11,13 @@ public partial class TideViewModel : ObservableObject
 
     [ObservableProperty] private Station selectedStation;
 
-    private List<Tide> _tides = new List<Tide>();
-    private TideModel _tideModel = new TideModel();
+    private List<Tide> _tides = new ();
+    private TideModel _tideModel = new();
     private readonly int _daysBefore = 0;
     private readonly int _daysAfter = 2;
 
-    [ObservableProperty] private List<Tide> selectedTides = new();
+    // this updates the graph but borks Android:
+    public ObservableCollection<Tide> SelectedTides { get; set; } = new();
 
     private readonly ObservableCollection<Tide> _allTides = new();
     [ObservableProperty]
@@ -59,6 +60,7 @@ public partial class TideViewModel : ObservableObject
             // date changed, but not the station, so just extract from the existing _tideModel
             else if (SelectedTides.Count <= 0 || SelectedTides.First().TideDateTime.DayOfYear != SelectedDateTime.DayOfYear - _daysBefore)
             {
+                //TODO: just get from _tides, or remove this check altogether
                 GetNewDates();
             }
         }
@@ -84,20 +86,16 @@ public partial class TideViewModel : ObservableObject
             if (tideDateTime.DayOfYear <= SelectedDateTime.DayOfYear + _daysAfter &&
                 tideDateTime.DayOfYear >= SelectedDateTime.DayOfYear - _daysBefore)
             {
-                //Console.WriteLine(tideDateTime.DayOfYear);
                 SelectedTides.Add(newTide);
             }
         }
-        
-        //SelectedTides.Add(_tides.First());
         
         var groups = SelectedTides
             .OrderBy(x => x.TideDateTime) // Sort by date
             .GroupBy(x => x.TideDateTime.Date.ToString("ddd, MMM. dd, yyyy")) // Group by date as a string
             .Select(g => new TideGroup(g.Key, g))
             .ToList();
-
-        // Update the bound property*/
+        
         GroupedTides = new ObservableCollection<TideGroup>(groups);
     }
 }

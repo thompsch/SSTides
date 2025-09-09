@@ -33,9 +33,8 @@
                 <chart:SfCartesianChart.XAxes>
                     <!-- X-Axis Design-->
                     <chart:DateTimeAxis CrossesAt="-4.2"  Interval="1" IntervalType="Days" >
-                        
                         <chart:DateTimeAxis.LabelStyle>
-                            <chart:ChartAxisLabelStyle LabelFormat="M/d" TextColor="Black" FontAttributes="Bold"/>
+                            <chart:ChartAxisLabelStyle  Margin="0,7,0,0"  LabelFormat="M/d" TextColor="Black" FontAttributes="Bold"/>
                         </chart:DateTimeAxis.LabelStyle>
                         <chart:DateTimeAxis.PlotBands>
                                 <chart:DateTimePlotBandCollection>
@@ -105,9 +104,8 @@
                 </chart:SfCartesianChart.Annotations>
                 
             </chart:SfCartesianChart>
-
-        </Grid>
-        <Border  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="100" Padding="2 ">
+            <!--start tide table-->
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="100" Padding="2 ">
             <CollectionView Height="100" Margin="0,10" ItemsSource="{Binding GroupedTides}" IsGrouped="True">
                 <CollectionView.GroupHeaderTemplate>
                      <DataTemplate>
@@ -138,6 +136,7 @@
                     </CollectionView.ItemTemplate>
              </CollectionView>
              </Border>
+            <!--end tide table-->
         <!-- start calendar view-->
             <Grid Grid.Column="1" Grid.Row="2" Padding="5" Margin="0,10">
                     <Grid.RowDefinitions>
@@ -167,7 +166,8 @@
                         <calendar:CalendarFooterView ShowTodayButton="True" />
                     </calendar:SfCalendar.FooterView>
                 </calendar:SfCalendar>
-            </Grid>
+                </Grid>
+        </Grid>
             <!-- end calendar view-->
     </VerticalStackLayout>
 </ContentPage>
