@@ -1,25 +1,26 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows.Input;
 
 namespace SalishSeaTides.Models;
 
 public partial class TideViewModel : ObservableObject
 {
-    public DateTime SelectedDateTime { get; set; } = DateTime.Now;
+    [ObservableProperty] 
+    private DateTime selectedDateTime = DateTime.Now;
 
-    [ObservableProperty] public Station selectedStation;
+    [ObservableProperty] private Station selectedStation;
 
     private List<Tide> _tides = new List<Tide>();
     private TideModel _tideModel = new TideModel();
     private readonly int _daysBefore = 0;
     private readonly int _daysAfter = 2;
 
-    public ObservableCollection<Tide> SelectedTides { get; set; } = new ObservableCollection<Tide>();
+    [ObservableProperty] private List<Tide> selectedTides = new();
+
+    private readonly ObservableCollection<Tide> _allTides = new();
+    [ObservableProperty]
+    private ObservableCollection<TideGroup> _groupedTides = new();
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
@@ -31,51 +32,72 @@ public partial class TideViewModel : ObservableObject
     {
         if (selectedStation == null)
         {
-            SelectedStation = Station.Stations.First(s => s.StationId == 9447856);
+            SelectedStation = Station.Stations.First(s => s.StationId == "9447856");
         }
     }
 
     private void CheckForRefresh()
     {
-        if (_tideModel == null || _tides == null || _tideModel.StationName != SelectedStation.Name || //wrong station
-            _tideModel.BeginDate == null || _tideModel.BeginDate.Substring(0, 4) != SelectedDateTime.Year.ToString() ||
-            _tides.Count <= 0 || _tideModel.Items.Count <= 0)
         {
-
-            Console.WriteLine("New tides needed");
-            _tides = new List<Tide>();
-            SelectedTides.Clear();
-            _tideModel = XmlToTideHandler.GetAllTides(SelectedStation.StationId).Result;
-
-            if (_tideModel == null)
+            // _tideModel can be null despite Rider information
+            if (_tideModel == null || _tideModel.StationId != SelectedStation.StationId)
             {
-                return;
-                //TODO: popup to warn user that tides are missing
-            }
+                Console.WriteLine("New tides needed");
+                _tides = new List<Tide>();
+                _tideModel = XmlToTideHandler.GetAllTides(SelectedStation.StationId).Result;
 
-            foreach (var item in _tideModel.Items)
-            {
-                string time = item.Time;
-                var format = "yyyy/MM/dd'T'hh:mm tt";
-
-                DateTime tideDateTime = DateTime.ParseExact($"{item.Date}T{time}", format, null);
-
-                var newTide = new Tide(item.PredInFt, tideDateTime, item.HighLow);
-                newTide.ShortDate = $"{item.Day},{item.Date.Substring(5)} {item.Time}";
-
-
-                _tides.Add(newTide);
-                if (tideDateTime.DayOfYear <= SelectedDateTime.DayOfYear + _daysAfter &&
-                    tideDateTime.DayOfYear >= SelectedDateTime.DayOfYear - _daysBefore)
+                // _tideModel can be null despite Rider information
+                if (_tideModel == null)
                 {
-                    Console.WriteLine(tideDateTime.DayOfYear);
-                    SelectedTides.Add(newTide);
+                    return;
+                    
+                    //TODO: popup to warn user that tides are missing
                 }
+
+                GetNewDates();
+            }
+            // date changed, but not the station, so just extract from the existing _tideModel
+            else if (SelectedTides.Count <= 0 || SelectedTides.First().TideDateTime.DayOfYear != SelectedDateTime.DayOfYear - _daysBefore)
+            {
+                GetNewDates();
             }
         }
     }
-}
 
-public partial class Tide
-{
+    private void GetNewDates()
+    {
+        SelectedTides.Clear();
+        
+        var min = _tideModel.Items.Min(t => Convert.ToDouble(t.PredInFt));
+        foreach (var item in _tideModel.Items)
+        {
+            string time = item.Time;
+            var format = "yyyy/MM/dd'T'hh:mm tt";
+
+            DateTime tideDateTime = DateTime.ParseExact($"{item.Date}T{time}", format, null);
+
+            string highlow = item.HighLow == "H"? "High" : "Low";
+            var newTide = new Tide(item.PredInFt, tideDateTime, highlow);
+            newTide.DisplayTimeForTable = item.Time;
+            
+            _tides.Add(newTide);
+            if (tideDateTime.DayOfYear <= SelectedDateTime.DayOfYear + _daysAfter &&
+                tideDateTime.DayOfYear >= SelectedDateTime.DayOfYear - _daysBefore)
+            {
+                //Console.WriteLine(tideDateTime.DayOfYear);
+                SelectedTides.Add(newTide);
+            }
+        }
+        
+        //SelectedTides.Add(_tides.First());
+        
+        var groups = SelectedTides
+            .OrderBy(x => x.TideDateTime) // Sort by date
+            .GroupBy(x => x.TideDateTime.Date.ToString("ddd, MMM. dd, yyyy")) // Group by date as a string
+            .Select(g => new TideGroup(g.Key, g))
+            .ToList();
+
+        // Update the bound property*/
+        GroupedTides = new ObservableCollection<TideGroup>(groups);
+    }
 }
