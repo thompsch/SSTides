@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Reflection;
-using System.Xml.Serialization;
-using Microsoft.Maui.Controls;
-using SalishSeaTides.Models;
+﻿using SalishSeaTides.Models;
 using Syncfusion.Maui.Calendar;
 
 namespace SalishSeaTides;
