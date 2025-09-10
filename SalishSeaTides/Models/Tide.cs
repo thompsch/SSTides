@@ -8,6 +8,8 @@ public partial class Tide(string height, DateTime tideDateTime, string tideType)
     public DateTime TideDateTime { get; set; } = tideDateTime;
     public string TideType { get; set; } = tideType; //H or L
     public string DisplayTimeForTable { get; set; }
+    
+    public Color DisplayColorForTable { get; set; }
 }
 
 public class TideGroup : ObservableCollection<Tide>

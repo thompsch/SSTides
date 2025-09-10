@@ -13,7 +13,9 @@ public partial class MainPage : ContentPage
 	private async void OnButtonClicked(object sender, EventArgs e)
 	{
 		var tideViewModel = (TideViewModel)BindingContext;
-		await Navigation.PushModalAsync(new LocationSelector(tideViewModel));
+		var newViewModel = new LocationViewModel(tideViewModel);
+		var modalPage = new LocationSelector(newViewModel);
+		await Navigation.PushModalAsync(modalPage);
 	}
 
 	private void SwipeGestureRecognizer_OnSwipedLeft(object? sender, SwipedEventArgs e)
