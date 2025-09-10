@@ -34,7 +34,7 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <chart:SfCartesianChart Grid.Row="0" Grid.ColumnSpan="2">
+            <chart:SfCartesianChart Grid.Row="0" Grid.ColumnSpan="2" Margin="5,0,10,0">
                 <chart:SfCartesianChart.GestureRecognizers>
                     <SwipeGestureRecognizer Direction="Left" Swiped="SwipeGestureRecognizer_OnSwipedLeft"></SwipeGestureRecognizer>
                     <SwipeGestureRecognizer Direction="Right" Swiped="SwipeGestureRecognizer_OnSwipedRight"></SwipeGestureRecognizer>
@@ -61,10 +61,9 @@
                 <!-- End X-Axis Design-->
                 <!-- Y-Axis Design-->
                 <chart:SfCartesianChart.YAxes>
-                    <chart:NumericalAxis Maximum="13" Minimum="-5">
+                    <chart:NumericalAxis Maximum="13.5" Minimum="-4">
                                             <chart:NumericalAxis.MajorGridLineStyle>
-                                                <chart:ChartLineStyle Stroke="#999999"
-                                                                                                                 StrokeWidth="1"/>
+                                                <chart:ChartLineStyle Stroke="#999999" StrokeWidth="1"/>
                                             </chart:NumericalAxis.MajorGridLineStyle>
                                         </chart:NumericalAxis>
                 </chart:SfCartesianChart.YAxes> 
@@ -75,10 +74,10 @@
                                         YBindingPath="Height"
                                         ShowMarkers="True"
                                         ShowDataLabels="True"
-                                        StrokeWidth="3"
+                                        StrokeWidth="1"
                                         Fill="{StaticResource Tertiary}">
                             <chart:SplineAreaSeries.Stroke>
-                                    <SolidColorBrush Color="#aaddff"/>
+                                    <SolidColorBrush Color="#005"/>
                                 </chart:SplineAreaSeries.Stroke>
                             <chart:SplineAreaSeries.MarkerSettings>
                                 <chart:ChartMarkerSettings Type="Circle"
@@ -89,9 +88,9 @@
                                                            Width="5"/>
                             </chart:SplineAreaSeries.MarkerSettings>
                     <chart:SplineAreaSeries.DataLabelSettings>
-                        <chart:CartesianDataLabelSettings LabelPlacement="Inner" UseSeriesPalette="False">
+                        <chart:CartesianDataLabelSettings LabelPlacement="Outer" UseSeriesPalette="False">
                                 <chart:CartesianDataLabelSettings.LabelStyle>
-                                        <chart:ChartDataLabelStyle TextColor="#000" FontSize="12">
+                                        <chart:ChartDataLabelStyle LabelPadding="0,7" Margin="2" Background="#EDEDED" TextColor="#044" FontSize="12">
                                             </chart:ChartDataLabelStyle>
                                     </chart:CartesianDataLabelSettings.LabelStyle> 
                             </chart:CartesianDataLabelSettings>
@@ -111,7 +110,7 @@
             </chart:SfCartesianChart>
             <!--start tide table-->
         <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Padding="2 ">
-            <CollectionView Margin="0,10" ItemsSource="{Binding GroupedTides}" IsGrouped="True">
+            <CollectionView BackgroundColor="#d3dedb" Margin="0,10" ItemsSource="{Binding GroupedTides}" IsGrouped="True">
                 <CollectionView.GroupHeaderTemplate>
                      <DataTemplate>
                         <Label Text="{Binding TideDateTime }"
@@ -133,9 +132,9 @@
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Padding="0,0,0,2" FontSize="14" Text="{Binding TideType}" Grid.Row="0" Grid.Column="0" />
-                                <Label Padding="0,0,0,2" FontSize="14" Text="{Binding DisplayTimeForTable}" Grid.Row="0" Grid.Column="1" />
-                                <Label Padding="0,0,0,2" Text="{Binding Height}" Grid.Row="0" Grid.Column="2" />
+                                <Label TextColor="Black" Padding="0,0,0,2" FontSize="14" Text="{Binding TideType}" Grid.Row="0" Grid.Column="0" />
+                                <Label TextColor="Black"  Padding="0,0,0,2" FontSize="14" Text="{Binding DisplayTimeForTable}" Grid.Row="0" Grid.Column="1" />
+                                <Label TextColor="Black"  Padding="0,0,0,2" Text="{Binding Height}" Grid.Row="0" Grid.Column="2" />
                                 <!-- Separator line -->
                                 <BoxView Grid.Row="1" Grid.ColumnSpan="3"   
                                         BackgroundColor="LightGray" 
