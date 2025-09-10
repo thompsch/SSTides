@@ -17,8 +17,7 @@
                 </Border.StrokeShape>
                             <Button HorizontalOptions="Center" 
                                 BackgroundColor="White" 
-                                Text="{Binding SelectedStation.Name}" 
-                                 
+                                Text="{Binding SelectedStation.Name}"
                                 TextColor="Black"
                                 Clicked="OnButtonClicked"></Button>
                 </Border>
@@ -109,13 +108,16 @@
                 
             </chart:SfCartesianChart>
             <!--start tide table-->
-        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Padding="2 ">
-            <CollectionView BackgroundColor="#d3dedb" Margin="0,10" ItemsSource="{Binding GroupedTides}" IsGrouped="True">
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Padding="0,-10 " Margin="0,15 ,0,0">
+             <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15"/> 
+                </Border.StrokeShape>
+            <CollectionView Margin="0,10" ItemsSource="{Binding GroupedTides}" IsGrouped="True">
                 <CollectionView.GroupHeaderTemplate>
                      <DataTemplate>
                         <Label Text="{Binding TideDateTime }"
                                FontAttributes="Bold"
-                               FontSize="14"
+                               FontSize="12"
                                Padding="0,5,0,5"
                                TextColor="White"
                                BackgroundColor="{StaticResource PrimaryDark}"
@@ -128,13 +130,13 @@
                                 <Grid.RowDefinitions>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
-                                <Label TextColor="Black" Padding="0,0,0,2" FontSize="14" Text="{Binding TideType}" Grid.Row="0" Grid.Column="0" />
-                                <Label TextColor="Black"  Padding="0,0,0,2" FontSize="14" Text="{Binding DisplayTimeForTable}" Grid.Row="0" Grid.Column="1" />
-                                <Label TextColor="Black"  Padding="0,0,0,2" Text="{Binding Height}" Grid.Row="0" Grid.Column="2" />
+                                <Label BackgroundColor="{Binding DisplayColorForTable}" TextColor="Black" Padding="10,0,0,2" FontSize="14" Text="{Binding TideType}" Grid.Row="0" Grid.Column="0" />
+                                <Label BackgroundColor="{Binding DisplayColorForTable}" TextColor="Black"  Padding="0,0,0,2" FontSize="14" Text="{Binding DisplayTimeForTable}" Grid.Row="0" Grid.Column="1" />
+                                <Label HorizontalTextAlignment="End" BackgroundColor="{Binding DisplayColorForTable}" TextColor="Black"  Padding="0,0,10,2" Text="{Binding Height}" Grid.Row="0" Grid.Column="2" />
                                 <!-- Separator line -->
                                 <BoxView Grid.Row="1" Grid.ColumnSpan="3"   
                                         BackgroundColor="LightGray" 
@@ -152,7 +154,7 @@
                         <RowDefinition Height="0.4*" />
                     </Grid.RowDefinitions>
                 <calendar:SfCalendar SelectionChanged="SfCalendar_OnSelectionChanged" 
-                    ActionButtonClicked="SfCalendar_OnActionButtonClicked">
+                    ActionButtonClicked="SfCalendar_OnActionButtonClicked" BackgroundColor="{StaticResource HighTide}">
                     <calendar:SfCalendar.MonthView>
                         <calendar:CalendarMonthView NumberOfVisibleWeeks = "4">
                             <calendar:CalendarMonthView.HeaderView>

@@ -9,7 +9,7 @@ public partial class TideViewModel : ObservableObject
     [ObservableProperty] 
     private DateTime selectedDateTime = DateTime.Now;
 
-    [ObservableProperty] private Station selectedStation;
+    [ObservableProperty] public Station selectedStation;
 
     private List<Tide> _tides = new ();
     private TideModel _tideModel = new();
@@ -31,7 +31,7 @@ public partial class TideViewModel : ObservableObject
 
     public TideViewModel()
     {
-        if (selectedStation == null)
+        if (SelectedStation == null)
         {
             SelectedStation = Station.Stations.First(s => s.StationId == "9447856");
         }
@@ -81,6 +81,9 @@ public partial class TideViewModel : ObservableObject
             string highlow = item.HighLow == "H"? "High" : "Low";
             var newTide = new Tide(item.PredInFt, tideDateTime, highlow);
             newTide.DisplayTimeForTable = item.Time;
+            newTide.DisplayColorForTable = item.HighLow == "H" ? 
+                Application.Current.Resources["HighTide"] as Color :
+                Application.Current.Resources["LowTide"] as Color;
             
             _tides.Add(newTide);
             if (tideDateTime.DayOfYear <= SelectedDateTime.DayOfYear + _daysAfter &&
