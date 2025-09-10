@@ -27,16 +27,19 @@
                  </Image>
              </Border>
                 
-            <Picker Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Title="Location" HorizontalTextAlignment="Center"></Picker>
-            </Grid>
-           
-            <Border VerticalOptions="EndAndExpand" HorizontalOptions="Center">
-                <Button BackgroundColor="{StaticResource PrimaryDark}" Text="Cancel" Clicked="CancelButton_OnClicked"></Button>
-            </Border>
-            
-           
-        </VerticalStackLayout>
+                <Picker Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Title="Location" HorizontalTextAlignment="Center"></Picker>
 
-        
+                <Border Grid.Row="3" Grid.Column="1"  Stroke="LightGray" StrokeThickness="2" Margin="0,5" Padding="5" BackgroundColor="AliceBlue">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/> 
+                    </Border.StrokeShape>
+                    <Button 
+                        BackgroundColor="White" 
+                        TextColor="Black" 
+                        Text="Cancel" 
+                        Clicked="CancelButton_OnClicked"/>
+                </Border>
+            </Grid>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

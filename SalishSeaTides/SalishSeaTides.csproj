@@ -9,9 +9,9 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-
+ 
 		<!-- Display name -->
-		<ApplicationTitle>SalishSeaTides</ApplicationTitle>
+		<ApplicationTitle>Salish Sea Tides</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.ca13b.salishseatides</ApplicationId>
@@ -48,12 +48,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.110" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Maui.Core" Version="9.0.51" />
-		<PackageReference Include="Syncfusion.Maui.Calendar" Version="31.1.17" />
-		<PackageReference Include="Syncfusion.Maui.Charts" Version="31.1.17" />
-		<PackageReference Include="Syncfusion.Maui.Core" Version="31.1.17" />
+		<PackageReference Include="Microsoft.Maui.Core" Version="9.0.110" />
+		<PackageReference Include="Syncfusion.Maui.Calendar" Version="31.1.18" />
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="31.1.18" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="31.1.18" />
 	</ItemGroup>
-
 </Project>

@@ -5,21 +5,30 @@
              xmlns:model="clr-namespace:SalishSeaTides.Models"
              xmlns:calendar="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
              x:Class="SalishSeaTides.MainPage">
-
     <ContentPage.BindingContext>
         <model:TideViewModel/>
     </ContentPage.BindingContext>
     <VerticalStackLayout>
         <!-- top button-->
-        <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
-                <Button Grid.Column="1" HorizontalOptions="Center" BackgroundColor="{StaticResource PrimaryDark}" Text="{Binding SelectedStation.Name}" Margin="10,10,10,10" Clicked="OnButtonClicked"></Button>
+        <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" HorizontalOptions="Center" VerticalOptions="Center">
+        <Border Stroke="LightGray" StrokeThickness="2" Margin="0,5" Padding="5" BackgroundColor="AliceBlue">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/> 
+                </Border.StrokeShape>
+                            <Button HorizontalOptions="Center" 
+                                BackgroundColor="White" 
+                                Text="{Binding SelectedStation.Name}" 
+                                 
+                                TextColor="Black"
+                                Clicked="OnButtonClicked"></Button>
+                </Border>
             </VerticalStackLayout>
         <!-- end top button-->
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" /> 
+                <RowDefinition Height="*" /> 
                 <RowDefinition Height="1*" /> 
-                <RowDefinition Height="Auto" /> 
+                <RowDefinition Height="*" /> 
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -44,7 +53,7 @@
                                                             Size="24"
                                                             RepeatEvery="2"
                                                             RepeatEveryType="Days"
-                                                            Fill="#EEE"/>
+                                                            Fill="{StaticResource ChartBand}"/>
                                 </chart:DateTimePlotBandCollection>
                         </chart:DateTimeAxis.PlotBands>
                     </chart:DateTimeAxis>
@@ -66,32 +75,28 @@
                                         YBindingPath="Height"
                                         ShowMarkers="True"
                                         ShowDataLabels="True"
-                                        StrokeWidth="3">
+                                        StrokeWidth="3"
+                                        Fill="{StaticResource Tertiary}">
                             <chart:SplineAreaSeries.Stroke>
                                     <SolidColorBrush Color="#aaddff"/>
                                 </chart:SplineAreaSeries.Stroke>
-                            <chart:SplineSeries.MarkerSettings>
+                            <chart:SplineAreaSeries.MarkerSettings>
                                 <chart:ChartMarkerSettings Type="Circle"
                                                            Fill="#1166aa"
                                                            Stroke="White"
                                                            StrokeWidth="1"
                                                            Height="5"
                                                            Width="5"/>
-                            </chart:SplineSeries.MarkerSettings>
-                    <chart:SplineSeries.DataLabelSettings>
+                            </chart:SplineAreaSeries.MarkerSettings>
+                    <chart:SplineAreaSeries.DataLabelSettings>
                         <chart:CartesianDataLabelSettings LabelPlacement="Inner" UseSeriesPalette="False">
                                 <chart:CartesianDataLabelSettings.LabelStyle>
                                         <chart:ChartDataLabelStyle TextColor="#000" FontSize="12">
                                             </chart:ChartDataLabelStyle>
                                     </chart:CartesianDataLabelSettings.LabelStyle> 
                             </chart:CartesianDataLabelSettings>
-                    </chart:SplineSeries.DataLabelSettings>
-                    <chart:SplineAreaSeries.Fill>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <GradientStop Color="#1166AAE6" Offset="0" />
-                            <GradientStop Color="#fff" Offset="1" />
-                        </LinearGradientBrush>
-                    </chart:SplineAreaSeries.Fill> 
+                    </chart:SplineAreaSeries.DataLabelSettings>
+                   
                     
                 </chart:SplineAreaSeries>
                 
@@ -105,8 +110,8 @@
                 
             </chart:SfCartesianChart>
             <!--start tide table-->
-        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="100" Padding="2 ">
-            <CollectionView Height="100" Margin="0,10" ItemsSource="{Binding GroupedTides}" IsGrouped="True">
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Padding="2 ">
+            <CollectionView Margin="0,10" ItemsSource="{Binding GroupedTides}" IsGrouped="True">
                 <CollectionView.GroupHeaderTemplate>
                      <DataTemplate>
                         <Label Text="{Binding TideDateTime }"
@@ -131,6 +136,11 @@
                                 <Label Padding="0,0,0,2" FontSize="14" Text="{Binding TideType}" Grid.Row="0" Grid.Column="0" />
                                 <Label Padding="0,0,0,2" FontSize="14" Text="{Binding DisplayTimeForTable}" Grid.Row="0" Grid.Column="1" />
                                 <Label Padding="0,0,0,2" Text="{Binding Height}" Grid.Row="0" Grid.Column="2" />
+                                <!-- Separator line -->
+                                <BoxView Grid.Row="1" Grid.ColumnSpan="3"   
+                                        BackgroundColor="LightGray" 
+                                        HeightRequest="1" 
+                                        Margin="0,20,0,0" /> 
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -138,26 +148,28 @@
              </Border>
             <!--end tide table-->
         <!-- start calendar view-->
-            <Grid Grid.Column="1" Grid.Row="2" Padding="5" Margin="0,10">
+            <Grid Grid.Column="1" Grid.Row="1" Padding="5" Margin="0,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.4*" />
                     </Grid.RowDefinitions>
-                <calendar:SfCalendar SelectionChanged="SfCalendar_OnSelectionChanged" ActionButtonClicked="SfCalendar_OnActionButtonClicked">
+                <calendar:SfCalendar SelectionChanged="SfCalendar_OnSelectionChanged" 
+                    ActionButtonClicked="SfCalendar_OnActionButtonClicked">
                     <calendar:SfCalendar.MonthView>
                         <calendar:CalendarMonthView NumberOfVisibleWeeks = "4">
                             <calendar:CalendarMonthView.HeaderView>
                                 <calendar:CalendarMonthHeaderView Background="{StaticResource Primary}">
                                     <calendar:CalendarMonthHeaderView.TextStyle>
-                                       <calendar:CalendarTextStyle FontAttributes="Bold, Italic"/>
+                                       <calendar:CalendarTextStyle TextColor="AliceBlue" FontAttributes="Bold, Italic"/>
                                     </calendar:CalendarMonthHeaderView.TextStyle>
                                 </calendar:CalendarMonthHeaderView>
                             </calendar:CalendarMonthView.HeaderView>
                         </calendar:CalendarMonthView>
                     </calendar:SfCalendar.MonthView>
                     <calendar:SfCalendar.HeaderView>
-                        <calendar:CalendarHeaderView Background="{StaticResource PrimaryDark}" TextFormat="MMM yy" ShowNavigationArrows="True">
+                        <calendar:CalendarHeaderView Background="{StaticResource PrimaryDark}" 
+                                TextFormat="MMM yy" ShowNavigationArrows="True">
                             <calendar:CalendarHeaderView.TextStyle>
-                                <calendar:CalendarTextStyle TextColor="White" FontSize="14" />
+                                <calendar:CalendarTextStyle TextColor="White" FontSize="12" />
                             </calendar:CalendarHeaderView.TextStyle>
                         </calendar:CalendarHeaderView>
                     </calendar:SfCalendar.HeaderView>
