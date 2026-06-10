@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <!-- Pull in model source files that have no MAUI runtime dependencies -->
+  <ItemGroup>
+    <Compile Include="../SalishSeaTides/Models/Station.cs" />
+    <Compile Include="../SalishSeaTides/Models/Tide.cs" />
+    <Compile Include="../SalishSeaTides/Models/TideModel.cs" />
+  </ItemGroup>
+
+  <!-- Microsoft.Maui.Graphics provides the Color type used in Tide.cs -->
+  <ItemGroup>
+    <Using Include="Microsoft.Maui.Graphics" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Graphics" Version="10.0.0-rc.1.25452.6" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
