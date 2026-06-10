@@ -1,11 +1,29 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace SalishSeaTides.Models;
 
 public partial class TideViewModel : ObservableObject
 {
+    private DataTemplate circleTemplate;
+    
+    private DataTemplate template;
+
+    public DataTemplate Template
+    {
+        get
+        {
+            return this.template;
+        }
+        set
+        {
+            this.template = value;
+        }
+    }
+    
+    
     [ObservableProperty] 
     private DateTime selectedDateTime = DateTime.Now;
 
@@ -35,6 +53,7 @@ public partial class TideViewModel : ObservableObject
         {
             SelectedStation = Station.Stations.First(s => s.StationId == "9447856");
         }
+        MakeMonthTemplate();
     }
 
     private void CheckForRefresh()
@@ -51,7 +70,7 @@ public partial class TideViewModel : ObservableObject
                 if (_tideModel == null)
                 {
                     return;
-                    
+
                     //TODO: popup to warn user that tides are missing
                 }
 
@@ -68,6 +87,7 @@ public partial class TideViewModel : ObservableObject
 
     private void GetNewDates()
     {
+        _tides.Clear();
         SelectedTides.Clear();
         
         var min = _tideModel.Items.Min(t => Convert.ToDouble(t.PredInFt));
@@ -101,4 +121,38 @@ public partial class TideViewModel : ObservableObject
         
         GroupedTides = new ObservableCollection<TideGroup>(groups);
     }
+
+    private void MakeMonthTemplate()
+    {
+        this.circleTemplate = new DataTemplate(() =>
+        {
+            Grid grid = new Grid();
+
+            Border border = new Border();
+            border.BackgroundColor = Color.FromRgba("#F5F5F5");
+            border.StrokeShape = new RoundRectangle()
+            {
+                CornerRadius = new CornerRadius(25)
+            };
+
+            border.SetBinding(Border.StrokeThicknessProperty, "Date");
+            border.Stroke = (Color)Application.Current.Resources["LowTide"];
+           //     Color.FromArgb("#000");//("#0A3A74");
+
+            Label label = new Label();
+            label.SetBinding(Label.TextProperty, "Date.Day");
+            label.HorizontalOptions = LayoutOptions.Center;
+            label.VerticalOptions = LayoutOptions.Center;
+            label.Padding = new Thickness(2);
+            border.Content = label;
+
+            grid.Add(border);
+            grid.Padding = new Thickness(1);
+            grid.HeightRequest = 30;
+
+            return grid;
+        });
+
+        this.template = this.circleTemplate;
+    }       
 }

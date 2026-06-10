@@ -151,34 +151,66 @@
         <!-- start calendar view-->
             <Grid Grid.Column="1" Grid.Row="1" Padding="5" Margin="0,10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0.4*" />
+                        <RowDefinition Height="0.8*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                <calendar:SfCalendar SelectionChanged="SfCalendar_OnSelectionChanged" 
-                    ActionButtonClicked="SfCalendar_OnActionButtonClicked" BackgroundColor="{StaticResource HighTide}">
+                <calendar:SfCalendar Grid.Row="0" x:Name="TidesCalendar"
+                    SelectionChanged="SfCalendar_OnSelectionChanged"
+                    SelectionBackground="#EDEDFF"
+                    BackgroundColor="{StaticResource HighTide}">
+                    <calendar:SfCalendar.SelectionCellTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                                <Border Stroke="#FF0000"
+                                        StrokeThickness="2"
+                                        Background="Transparent"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        Padding="1"
+                                        HeightRequest="30"
+                                        WidthRequest="30"
+                                        >
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="25"/>
+                                    </Border.StrokeShape>
+                                <Label Text="{Binding Date.Day}"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       TextColor="{StaticResource PrimaryDark}"
+                                       FontAttributes="Bold,Italic"
+                                        />
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </calendar:SfCalendar.SelectionCellTemplate>
                     <calendar:SfCalendar.MonthView>
-                        <calendar:CalendarMonthView NumberOfVisibleWeeks = "4">
+                        <calendar:CalendarMonthView NumberOfVisibleWeeks = "4"  CellTemplate="{Binding Template}">
                             <calendar:CalendarMonthView.HeaderView>
-                                <calendar:CalendarMonthHeaderView Background="{StaticResource Primary}">
+                                <calendar:CalendarMonthHeaderView Background="{StaticResource LowTide}">
                                     <calendar:CalendarMonthHeaderView.TextStyle>
-                                       <calendar:CalendarTextStyle TextColor="AliceBlue" FontAttributes="Bold, Italic"/>
+                                       <calendar:CalendarTextStyle TextColor="Black" FontAttributes="Bold, Italic"/>
                                     </calendar:CalendarMonthHeaderView.TextStyle>
                                 </calendar:CalendarMonthHeaderView>
                             </calendar:CalendarMonthView.HeaderView>
                         </calendar:CalendarMonthView>
                     </calendar:SfCalendar.MonthView>
                     <calendar:SfCalendar.HeaderView>
-                        <calendar:CalendarHeaderView Background="{StaticResource PrimaryDark}" 
-                                TextFormat="MMM yy" ShowNavigationArrows="True">
+                        <calendar:CalendarHeaderView Background="{StaticResource PrimaryDark}"
+                                TextFormat="MMM yyyy" ShowNavigationArrows="True">
                             <calendar:CalendarHeaderView.TextStyle>
-                                <calendar:CalendarTextStyle TextColor="White" FontSize="12" />
+                                <calendar:CalendarTextStyle TextColor="White" FontAttributes="Bold" FontSize="12" />
                             </calendar:CalendarHeaderView.TextStyle>
                         </calendar:CalendarHeaderView>
                     </calendar:SfCalendar.HeaderView>
-                    
-                    <calendar:SfCalendar.FooterView >
-                        <calendar:CalendarFooterView ShowTodayButton="True" />
-                    </calendar:SfCalendar.FooterView>
                 </calendar:SfCalendar>
+                <Button Grid.Row="1" Text="Today"
+                        Clicked="OnTodayClicked"
+                        BackgroundColor="{StaticResource PrimaryDark}"
+                        TextColor="White"
+                        FontSize="12"
+                        HeightRequest="36"
+                        CornerRadius="5"
+                        Margin="0,4,0,0" />
                 </Grid>
         </Grid>
             <!-- end calendar view-->

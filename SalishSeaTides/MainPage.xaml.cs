@@ -34,21 +34,16 @@ public partial class MainPage : ContentPage
 
 	private void SfCalendar_OnSelectionChanged(object? sender, CalendarSelectionChangedEventArgs e)
 	{
+		if (sender is not SfCalendar calendar || !calendar.SelectedDate.HasValue) return;
 		var tideViewModel = (TideViewModel)BindingContext;
-		tideViewModel.SelectedDateTime = ((SfCalendar)sender).SelectedDate.Value.AddDays(1);
+		tideViewModel.SelectedDateTime = calendar.SelectedDate.Value;
 	}
 
-	private void SfCalendar_OnActionButtonClicked(object? sender, CalendarSubmittedEventArgs e)
+	private void OnTodayClicked(object? sender, EventArgs e)
 	{
-		//Not firing.
-		/*              if (e.CalendarAction.Today)
-		                {
-		                        // Logic to navigate to today's date
-		                        // For example, you could set the SelectedDate property:
-		                        Calendar.SelectedDate = DateTime.Now;
-		                }
-		        }*/
+		TidesCalendar.SelectedDate = DateTime.Today;
+		TidesCalendar.DisplayDate = DateTime.Today;
 		var tideViewModel = (TideViewModel)BindingContext;
-		tideViewModel.SelectedDateTime = DateTime.Now;
+		tideViewModel.SelectedDateTime = DateTime.Today;
 	}
 }
