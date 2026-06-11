@@ -8,10 +8,15 @@
     <ContentPage.BindingContext>
         <model:TideViewModel/>
     </ContentPage.BindingContext>
-    <VerticalStackLayout>
+    <Grid RowDefinitions="0.3*,1.7*,1.5*" ColumnDefinitions="1.8*,1*,1*">
         <!-- top button-->
-        <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" HorizontalOptions="Center" VerticalOptions="Center">
-        <Border Stroke="LightGray" StrokeThickness="2" Margin="0,5" Padding="5" BackgroundColor="AliceBlue">
+        <Border Grid.Row="0" Grid.ColumnSpan="3" 
+                HorizontalOptions="Center" 
+                Stroke="LightGray" 
+                StrokeThickness="2" 
+                Margin="0,2" 
+                Padding="0" 
+                BackgroundColor="AliceBlue">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="10"/> 
                 </Border.StrokeShape>
@@ -20,20 +25,10 @@
                                 Text="{Binding SelectedStation.Name}"
                                 TextColor="Black"
                                 Clicked="OnButtonClicked"></Button>
-                </Border>
-            </VerticalStackLayout>
+        </Border>
         <!-- end top button-->
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" /> 
-                <RowDefinition Height="1*" /> 
-                <RowDefinition Height="*" /> 
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <chart:SfCartesianChart Grid.Row="0" Grid.ColumnSpan="2" Margin="5,0,10,0">
+        <!-- begin chart-->
+            <chart:SfCartesianChart Grid.Row="1" Grid.ColumnSpan="3" Margin="5,0,10,0">
                 <chart:SfCartesianChart.GestureRecognizers>
                     <SwipeGestureRecognizer Direction="Left" Swiped="SwipeGestureRecognizer_OnSwipedLeft"></SwipeGestureRecognizer>
                     <SwipeGestureRecognizer Direction="Right" Swiped="SwipeGestureRecognizer_OnSwipedRight"></SwipeGestureRecognizer>
@@ -42,7 +37,10 @@
                     <!-- X-Axis Design-->
                     <chart:DateTimeAxis CrossesAt="-4.2"  Interval="1" IntervalType="Days" >
                         <chart:DateTimeAxis.LabelStyle>
-                            <chart:ChartAxisLabelStyle  Margin="0,7,0,0"  LabelFormat="M/d" TextColor="Black" FontAttributes="Bold"/>
+                            <chart:ChartAxisLabelStyle  Margin="0,7,0,0"  
+                                                        LabelFormat="M/d" 
+                                                        TextColor="{StaticResource LowTide}" 
+                                                        FontAttributes="Bold"/>
                         </chart:DateTimeAxis.LabelStyle>
                         <chart:DateTimeAxis.PlotBands>
                                 <chart:DateTimePlotBandCollection>
@@ -100,19 +98,34 @@
                 
                 <chart:SfCartesianChart.Annotations>
                     <chart:VerticalLineAnnotation
-                        X1 ="{Binding SelectedDateTime}"
+                        X1="{Binding NowDateTime}"
+                        IsVisible="{Binding IsNowVisible}"
+                        Text="Now"
+                        
                         Stroke="Purple"
                         StrokeDashArray="2,2"
-                        StrokeWidth="1" />
+                        StrokeWidth="2">
+                        <chart:VerticalLineAnnotation.LabelStyle>
+                            <chart:ChartAnnotationLabelStyle
+                                HorizontalTextAlignment="End"
+                                VerticalTextAlignment="End"
+                                TextColor="Purple"
+                                FontSize="14"
+                                Margin="1,0,0,0"/>
+                        </chart:VerticalLineAnnotation.LabelStyle>
+                    </chart:VerticalLineAnnotation>
                 </chart:SfCartesianChart.Annotations>
                 
             </chart:SfCartesianChart>
             <!--start tide table-->
-        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Padding="0,-10 " Margin="0,15 ,0,0">
-             <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="15"/> 
-                </Border.StrokeShape>
-            <CollectionView Margin="0,10" ItemsSource="{Binding GroupedTides}" IsGrouped="True">
+        <Border Grid.Row="2" Grid.Column="0"
+                 StrokeShape="RoundRectangle 20"
+                 StrokeThickness="0"
+                 HorizontalOptions="Fill"
+                 VerticalOptions="Fill"
+                 Padding="0,0,0,0"
+                 Margin="0,16, 0, 0">
+            <CollectionView ItemsSource="{Binding GroupedTides}" IsGrouped="True">
                 <CollectionView.GroupHeaderTemplate>
                      <DataTemplate>
                         <Label Text="{Binding TideDateTime }"
@@ -146,15 +159,17 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
              </CollectionView>
-             </Border>
+            </Border>
             <!--end tide table-->
-        <!-- start calendar view-->
-            <Grid Grid.Column="1" Grid.Row="1" Padding="5" Margin="0,10">
+            <!-- start calendar view-->
+            <Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Padding="5" Margin="0,10, 0, 0"
+                  >
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0.8*" />
+                        <RowDefinition Height="8*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                 <calendar:SfCalendar Grid.Row="0" x:Name="TidesCalendar"
+                                     Padding="0,0,0,30"
                     SelectionChanged="SfCalendar_OnSelectionChanged"
                     SelectionBackground="#EDEDFF"
                     BackgroundColor="{StaticResource HighTide}">
@@ -167,8 +182,8 @@
                                         HorizontalOptions="Center"
                                         VerticalOptions="Center"
                                         Padding="1"
-                                        HeightRequest="30"
-                                        WidthRequest="30"
+                                        HeightRequest="25"
+                                        WidthRequest="25"
                                         >
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="25"/>
@@ -176,7 +191,7 @@
                                 <Label Text="{Binding Date.Day}"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center"
-                                       TextColor="{StaticResource PrimaryDark}"
+                                       TextColor="Black"
                                        FontAttributes="Bold,Italic"
                                         />
                                 </Border>
@@ -184,7 +199,9 @@
                         </DataTemplate>
                     </calendar:SfCalendar.SelectionCellTemplate>
                     <calendar:SfCalendar.MonthView>
-                        <calendar:CalendarMonthView NumberOfVisibleWeeks = "4"  CellTemplate="{Binding Template}">
+                        <calendar:CalendarMonthView
+                            NumberOfVisibleWeeks = "4"  
+                            CellTemplate="{Binding Template}">
                             <calendar:CalendarMonthView.HeaderView>
                                 <calendar:CalendarMonthHeaderView Background="{StaticResource LowTide}">
                                     <calendar:CalendarMonthHeaderView.TextStyle>
@@ -203,16 +220,25 @@
                         </calendar:CalendarHeaderView>
                     </calendar:SfCalendar.HeaderView>
                 </calendar:SfCalendar>
-                <Button Grid.Row="1" Text="Today"
-                        Clicked="OnTodayClicked"
-                        BackgroundColor="{StaticResource PrimaryDark}"
-                        TextColor="White"
-                        FontSize="12"
-                        HeightRequest="36"
-                        CornerRadius="5"
-                        Margin="0,4,0,0" />
-                </Grid>
+                 <!-- end calendar view-->
+                 <Border Grid.Row="1"   
+                         StrokeThickness="0"
+                         BackgroundColor="{StaticResource HighTide}"
+                         Margin="0,-30,0,0"
+                         Padding="0,0,0,0">
+                     <Border.StrokeShape>
+                         <RoundRectangle CornerRadius="0,0,15,15"/> 
+                     </Border.StrokeShape>
+                     <Button  Text="Today"
+                              Clicked="OnTodayClicked"
+                              BackgroundColor="{StaticResource LowTide}"
+                              TextColor="{StaticResource PrimaryDark}"
+                              FontSize="14"
+                              CornerRadius="15"
+                              HeightRequest="20"
+                              HorizontalOptions="Start"
+                              Margin="10,0,0,0" />
+                 </Border>
+            </Grid>
         </Grid>
-            <!-- end calendar view-->
-    </VerticalStackLayout>
 </ContentPage>

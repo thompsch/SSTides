@@ -10,6 +10,13 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 	}
 
+	protected override void OnAppearing()
+	{
+		base.OnAppearing();
+		TidesCalendar.SelectedDate = DateTime.Today;
+		TidesCalendar.DisplayDate = DateTime.Today;
+	}
+
 	private async void OnButtonClicked(object sender, EventArgs e)
 	{
 		var tideViewModel = (TideViewModel)BindingContext;

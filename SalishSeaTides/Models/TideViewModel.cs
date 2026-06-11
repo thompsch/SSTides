@@ -24,8 +24,14 @@ public partial class TideViewModel : ObservableObject
     }
     
     
-    [ObservableProperty] 
+    [ObservableProperty]
     private DateTime selectedDateTime = DateTime.Now;
+
+    [ObservableProperty]
+    private DateTime nowDateTime = DateTime.Now;
+
+    [ObservableProperty]
+    private bool isNowVisible;
 
     [ObservableProperty] public Station selectedStation;
 
@@ -54,7 +60,30 @@ public partial class TideViewModel : ObservableObject
             SelectedStation = Station.Stations.First(s => s.StationId == "9447856");
         }
         MakeMonthTemplate();
+        UpdateNowVisibility();
+        StartNowTimer();
     }
+
+    private void StartNowTimer()
+    {
+        var timer = Application.Current!.Dispatcher.CreateTimer();
+        timer.Interval = TimeSpan.FromMinutes(10);
+        timer.Tick += (_, _) =>
+        {
+            NowDateTime = DateTime.Now;
+            UpdateNowVisibility();
+        };
+        timer.Start();
+    }
+
+    private void UpdateNowVisibility()
+    {
+        var today = DateTime.Today;
+        IsNowVisible = today >= SelectedDateTime.Date.AddDays(-_daysBefore)
+                    && today <= SelectedDateTime.Date.AddDays(_daysAfter);
+    }
+
+    partial void OnSelectedDateTimeChanged(DateTime oldValue, DateTime newValue) => UpdateNowVisibility();
 
     private void CheckForRefresh()
     {
@@ -140,6 +169,7 @@ public partial class TideViewModel : ObservableObject
            //     Color.FromArgb("#000");//("#0A3A74");
 
             Label label = new Label();
+            label.TextColor = Color.FromArgb("000");
             label.SetBinding(Label.TextProperty, "Date.Day");
             label.HorizontalOptions = LayoutOptions.Center;
             label.VerticalOptions = LayoutOptions.Center;
@@ -148,7 +178,7 @@ public partial class TideViewModel : ObservableObject
 
             grid.Add(border);
             grid.Padding = new Thickness(1);
-            grid.HeightRequest = 30;
+            grid.HeightRequest = 25;
 
             return grid;
         });
