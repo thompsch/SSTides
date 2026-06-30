@@ -1,4 +1,7 @@
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using Microsoft.Maui.Graphics;
 
 namespace SalishSeaTides.Models;
 
@@ -16,7 +19,7 @@ public class TideGroup : ObservableCollection<Tide>
 {
     public string TideDateTime { get; private set; }
 
-    public TideGroup(string dateCategory, IEnumerable<Tide> tides) : base(tides)
+    public TideGroup(string dateCategory, IGrouping<string, Tide> tides) : base(tides)
     {
         TideDateTime = dateCategory;
     }

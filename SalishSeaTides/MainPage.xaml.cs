@@ -1,5 +1,7 @@
-﻿using SalishSeaTides.Models;
+﻿using Android.Content.Res;
+using SalishSeaTides.Models;
 using Syncfusion.Maui.Calendar;
+using Syncfusion.Maui.Charts;
 
 namespace SalishSeaTides;
 
@@ -20,8 +22,8 @@ public partial class MainPage : ContentPage
 	private async void OnButtonClicked(object sender, EventArgs e)
 	{
 		var tideViewModel = (TideViewModel)BindingContext;
-		var newViewModel = new LocationViewModel(tideViewModel);
-		var modalPage = new LocationSelector(newViewModel);
+		var newViewModel = new MapViewModel(tideViewModel);
+		var modalPage = new MapPage(newViewModel);
 		await Navigation.PushModalAsync(modalPage);
 	}
 

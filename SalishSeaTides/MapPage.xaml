@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:map="clr-namespace:Syncfusion.Maui.Maps;assembly=Syncfusion.Maui.Maps"
+             xmlns:models="clr-namespace:SalishSeaTides.Models"
+             xmlns:behaviors="clr-namespace:SalishSeaTides.Behaviors"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="SalishSeaTides.MapPage"
+             x:Name="MyMapPage">
+    <Grid RowDefinitions="2*,5*"
+          ColumnDefinitions="*">
+        <map:SfMaps Grid.Row="0">
+            <map:SfMaps.Layer>
+                <map:MapTileLayer UrlTemplate="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                  Markers="{Binding MarkerCollection}"
+                                  behaviors:MarkerCommand.Command="{Binding MarkerSelectedCommand}">
+                    <map:MapTileLayer.MarkerTemplate>
+                        <DataTemplate>
+                            <!-- Grid pins the center alignment of the icon onto the coordinate -->
+                            <Grid HeightRequest="30"
+                                  WidthRequest="30">
+                                <Ellipse Fill="Purple"
+                                         Stroke="Black"
+                                         StrokeThickness="2"
+                                         WidthRequest="16"
+                                         HeightRequest="16"
+                                         HorizontalOptions="Center"
+                                         VerticalOptions="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </map:MapTileLayer.MarkerTemplate>
+
+                    <map:MapTileLayer.ZoomPanBehavior>
+                        <map:MapZoomPanBehavior ZoomLevel="8"
+                                                EnablePanning="False"
+                                                EnableZooming="True"
+                                                EnableDoubleTapZooming="True"/>
+                    </map:MapTileLayer.ZoomPanBehavior>
+                    <map:MapTileLayer.Center>
+                        <map:MapLatLng Latitude="48.3"
+                                       Longitude="-122.7">
+                        </map:MapLatLng>
+                    </map:MapTileLayer.Center>
+                </map:MapTileLayer>
+            </map:SfMaps.Layer>
+        </map:SfMaps>
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding MarkerCollection}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Station">
+                    <ViewCell>
+                        <Grid BackgroundColor="Transparent">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={x:Reference MyMapPage}, Path=BindingContext.ItemTappedCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Grid.GestureRecognizers>
+                        <HorizontalStackLayout Padding="10" Spacing="10">
+                            <Label Text="{Binding Label}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Latitude, StringFormat='Lat: {0}'}"/>
+                            <Label Text="{Binding Longitude, StringFormat='Lon: {0}'}"/>
+                        </HorizontalStackLayout>
+                            </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentPage>

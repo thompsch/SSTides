@@ -1,7 +1,13 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
+using Microsoft.Maui.Graphics;
 
 namespace SalishSeaTides.Models;
 
@@ -28,10 +34,20 @@ public partial class TideViewModel : ObservableObject
     private DateTime selectedDateTime = DateTime.Now;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(NowTimeText))]
     private DateTime nowDateTime = DateTime.Now;
 
     [ObservableProperty]
     private bool isNowVisible;
+
+    [ObservableProperty]
+    private DateTime axisMinimum = DateTime.SpecifyKind(DateTime.Now.Date, DateTimeKind.Unspecified);
+
+    [ObservableProperty]
+    private DateTime axisMaximum = DateTime.SpecifyKind(DateTime.Now.Date.AddDays(3), DateTimeKind.Unspecified);
+
+
+    public string NowTimeText => NowDateTime.ToString("h:mm tt");
 
     [ObservableProperty] public Station selectedStation;
 
@@ -83,7 +99,17 @@ public partial class TideViewModel : ObservableObject
                     && today <= SelectedDateTime.Date.AddDays(_daysAfter);
     }
 
-    partial void OnSelectedDateTimeChanged(DateTime oldValue, DateTime newValue) => UpdateNowVisibility();
+    private void UpdateAxisRange()
+    {
+        AxisMinimum = DateTime.SpecifyKind(SelectedDateTime.Date, DateTimeKind.Unspecified);
+        AxisMaximum = DateTime.SpecifyKind(SelectedDateTime.Date.AddDays(_daysAfter + 1), DateTimeKind.Unspecified);
+    }
+
+    partial void OnSelectedDateTimeChanged(DateTime oldValue, DateTime newValue)
+    {
+        UpdateNowVisibility();
+        UpdateAxisRange();
+    }
 
     private void CheckForRefresh()
     {
@@ -149,6 +175,12 @@ public partial class TideViewModel : ObservableObject
             .ToList();
         
         GroupedTides = new ObservableCollection<TideGroup>(groups);
+
+        if (SelectedTides.Any())
+        {
+            AxisMinimum = SelectedTides.First().TideDateTime.Date;
+            AxisMaximum = SelectedTides.Last().TideDateTime.Date.AddDays(1);
+        }
     }
 
     private void MakeMonthTemplate()

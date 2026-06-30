@@ -11,8 +11,8 @@
     <Color x:Key="PrimaryDarkText">#242424</Color>
     <Color x:Key="Secondary">#2C238E</Color>
     <Color x:Key="SecondaryDarkText">#9880e5</Color>
-    <Color x:Key="Tertiary">#870044FF</Color>
-    <Color x:Key="ChartBand">#91D9D9D9</Color>
+    <Color x:Key="Tertiary">#BB6677FF</Color>
+    <Color x:Key="ChartBand">#88b0cbc5</Color>
     <Color x:Key="HighTide">#e6f0ee</Color>
     <Color x:Key="LowTide">#d1ede7</Color>
 

@@ -1,27 +1,32 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Syncfusion.Maui.Maps;
 
 namespace SalishSeaTides.Models;
 
-public class Station
+public class Station : MapMarker
 {
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
-    public string Name { get; set; }
+    public string Label { get; set; }
     public string StationId { get; set; }
 
-    private Station(double latitude, double longitude, string name, string stationId)
+    public Station(double latitude, double longitude, string label, string stationId)
     {
         this.Latitude = latitude;
         this.Longitude = longitude;    
-        this.Name = name;
+        this.Label = label;
         this.StationId = stationId;
     }
-    public static List<Station> Stations { get; set; } = new List<Station>()
+
+    public static Station GetStationByLatLong(double latitude, double longitude)
+    {
+        return Stations.FirstOrDefault(s => s.Latitude == latitude && s.Longitude == longitude);
+    }
+    public static ObservableCollection<Station> Stations { get; set; } = new ObservableCollection<Station>()
     {
         new Station(48.04,-122.38,"Sandy Point", "9447856"),
         new Station(48.0267,-122.535,"Holmes Harbor", "9447855"),        
         new Station(48.11290, -122.75950,"Port Townsend", "9444900"),
-        new Station(48.035,-122.377,"Penn Cove (Coupeville)", "9447929"),
+        new Station(48.035,-122.377,"Penn Cove", "9447929"),
         new Station(48.52,-122.62,"Anacortes", "9448794"),
         new Station(48.545,-123.01,"Friday Harbor", "9449880"),
         new Station(48.69,-123.04,"Waldron Island", "9449746"),
