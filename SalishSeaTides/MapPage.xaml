@@ -5,67 +5,80 @@
              xmlns:map="clr-namespace:Syncfusion.Maui.Maps;assembly=Syncfusion.Maui.Maps"
              xmlns:models="clr-namespace:SalishSeaTides.Models"
              xmlns:behaviors="clr-namespace:SalishSeaTides.Behaviors"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="SalishSeaTides.MapPage"
              x:Name="MyMapPage">
-    <Grid RowDefinitions="4*,5*"
+    <Grid RowDefinitions="6*,5*"
           ColumnDefinitions="*">
         <map:SfMaps Grid.Row="0">
             <map:SfMaps.Layer>
                 <map:MapTileLayer UrlTemplate="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
                                   Markers="{Binding MarkerCollection}"
-                                  ShowMarkerTooltip="True"
+                                  ShowMarkerTooltip="False"
                                   behaviors:MarkerCommand.Command="{Binding MarkerSelectedCommand}">
                     <map:MapTileLayer.MarkerTemplate>
 <DataTemplate>
-        <!-- 1. The Fixed Anchor Core -->
-        <!-- Forcing a 1x1 pixel size guarantees Syncfusion anchors this exact spot to the map. -->
-        <!-- Since the parent size is fixed at 1px, text length can NEVER shift this grid. -->
-        <Grid HorizontalOptions="Center" 
-              VerticalOptions="Center"
-              WidthRequest="1"
-              HeightRequest="1"
-              IsClippedToBounds="False"> 
+        <!-- The Grid handles standard Center alignment natively -->
+        <!-- No hardcoded WidthRequests on the root container means it stays fully touch-responsive -->
+        <Grid HorizontalOptions="Center" VerticalOptions="Center">
+            <Grid.ColumnDefinitions>
+                <!-- Column 0: Automatically mirrors the exact size of your text layout to pull the anchor left -->
+                <ColumnDefinition Width="Auto" />
+                <!-- Column 1: Match the precise width of your 16px Ellipse center point -->
+                <ColumnDefinition Width="16" />
+                <!-- Column 2: Holds your visible label, expanding infinitely rightward without truncation -->
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- 1. THE TRUE ANCHOR POINT (Sits perfectly locked on its map spot) --> 
+            <!-- Placed strictly in Column 1. Because Column 0 and Column 2 expand with matching logic, -->
+            <!-- the horizontal midpoint of this template always cuts right through this Ellipse. -->
+            <Ellipse Grid.Column="1"
+                     Fill="{StaticResource PrimaryDark}" 
+                     Stroke="{StaticResource Primary}" 
+                     StrokeThickness="1" 
+                     WidthRequest="16" 
+                     HeightRequest="16" 
+                     HorizontalOptions="Center" 
+                     VerticalOptions="Center"/> 
+                     
+            <!-- 2. THE VISIBLE TEXT LABEL --> 
+            <!-- Hugs the text length tightly. The clickable tap boundary matches this visible frame exactly. -->
+            <Border Grid.Column="2"
+                    x:Name="VisibleTextBorder"
+                    Stroke="Black" 
+                    StrokeThickness="0" 
+                    BackgroundColor="{StaticResource LowTide}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    Margin="6,0,0,0"> 
+                <Border.StrokeShape> 
+                    <RoundRectangle CornerRadius="2"/> 
+                </Border.StrokeShape> 
+                <Label Text="{Binding Label}" 
+                       TextColor="{StaticResource PrimaryDark}" 
+                       FontAttributes="Bold" 
+                       FontSize="11" 
+                       LineBreakMode="NoWrap"
+                       HeightRequest="16"
+                       VerticalOptions="Center" /> 
+            </Border> 
+
+            <!-- 3. THE GHOST BALANCE LAYER -->
+            <!-- Sits hidden inside Column 0. Using a Binding to replicate the exact width of the right Border -->
+            <!-- ensures that the left side of the layout expands identically to the right side. -->
+            <!-- This acts as a scale balance so that Column 1 remains locked precisely onto the map coordinate. -->
+            <Grid Grid.Column="0"
+                  WidthRequest="{Binding Source={x:Reference VisibleTextBorder}, Path=Width}"
+                  HeightRequest="1"
+                  Opacity="0"
+                  InputTransparent="True"
+                  Margin="0,0,6,0" />
             
-            <!-- 2. The Absolute Flow Layout Container -->
-            <!-- We shift this layout left by exactly half the Ellipse width (8px) using a negative margin. -->
-            <!-- This ensures the true center of the 16px Ellipse aligns perfectly with our 1px anchor core. -->
-            <HorizontalStackLayout VerticalOptions="Center"
-                                   Spacing="6"
-                                   Margin="-8,0,0,0"
-                                   IsClippedToBounds="False">
-                
-                <!-- 3. THE ANCHOR POINT (Stays perfectly fixed on its true map spot) --> 
-                <Ellipse Fill="{StaticResource PrimaryDark}" 
-                         Stroke="{StaticResource Primary}" 
-                         StrokeThickness="1" 
-                         WidthRequest="16" 
-                         HeightRequest="16" 
-                         VerticalOptions="Center"/> 
-                         
-                <!-- 4. THE VISIBLE TEXT LABEL (Dynamic width, zero truncation) --> 
-                <!-- Because it has no WidthRequest, it hugs the text length perfectly. -->
-                <!-- Because the root grid size is locked at 1px, long words will never push the Ellipse. -->
-                <Border Stroke="Black" 
-                        StrokeThickness="0" 
-                        BackgroundColor="{StaticResource LowTide}" 
-                        VerticalOptions="Center"> 
-                    <Border.StrokeShape> 
-                        <RoundRectangle CornerRadius="2"/> 
-                    </Border.StrokeShape> 
-                    <Label Text="{Binding Label}" 
-                           TextColor="{StaticResource PrimaryDark}" 
-                           FontAttributes="Bold" 
-                           FontSize="11" 
-                           LineBreakMode="NoWrap"
-                           HeightRequest="16"
-                           VerticalOptions="Center" /> 
-                </Border> 
-                
-            </HorizontalStackLayout>
         </Grid>
     </DataTemplate>
                     </map:MapTileLayer.MarkerTemplate>
+
+
                     <map:MapTileLayer.ZoomPanBehavior>
                         <map:MapZoomPanBehavior ZoomLevel="9"
                                                 EnablePanning="True"
@@ -92,7 +105,7 @@
                             HorizontalOptions="FillAndExpand"
                             VerticalOptions="FillAndExpand"
                             Padding="5,2"
-                            Margin="0,2"
+                            Margin="0,0"
                             BackgroundColor="{StaticResource LowTide}"
                             >
                         <Border.StrokeShape>
@@ -104,9 +117,9 @@
                                     Command="{Binding Source={x:Reference MyMapPage}, Path=BindingContext.ItemTappedCommand}"
                                     CommandParameter="{Binding .}"/>
                             </Grid.GestureRecognizers>
-                                <Label Grid.Column="0"  Text="{Binding Label}" FontAttributes="Bold"/>
-                                <Label Grid.Column="1" Text="{Binding Latitude, StringFormat='Lat: {0}'}"/>
-                                <Label Grid.Column="2" Text="{Binding Longitude, StringFormat='Lon: {0}'}"/>
+                                <Label Grid.Column="0" TextColor="{StaticResource PrimaryDark}" Text="{Binding Label}" FontAttributes="Bold"/>
+                                <Label Grid.Column="1" TextColor="{StaticResource PrimaryDark}" Text="{Binding Latitude, StringFormat='Lat: {0}'}"/>
+                                <Label Grid.Column="2" TextColor="{StaticResource PrimaryDark}" Text="{Binding Longitude, StringFormat='Lon: {0}'}"/>
                         </Grid>
 </Border>
                 </DataTemplate>

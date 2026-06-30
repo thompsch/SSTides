@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Syncfusion.Maui.Maps;
@@ -9,11 +10,14 @@ public partial class MapViewModel : ObservableObject
 {
     TideViewModel _tideViewModel;
 
-    [ObservableProperty]
-    public ObservableCollection<Station> markerCollection = Station.Stations;
+    [ObservableProperty] public ObservableCollection<Station> markerCollection;
 
     public MapViewModel()
     {
+        markerCollection = Station.Stations
+            .OrderByDescending(s=>s.Latitude)
+            .ThenBy(s=>s.Longitude)
+            .ToObservableCollection();
     }
 
     public MapViewModel(TideViewModel tideViewModel) : this()

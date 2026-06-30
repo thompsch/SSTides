@@ -26,7 +26,7 @@ public class Station : MapMarker
         new Station(48.04,-122.38,"Sandy Point", "9447856"),
         new Station(48.0267,-122.535,"Holmes Harbor", "9447855"),        
         new Station(48.11290, -122.75950,"Port Townsend", "9444900"),
-        new Station(48.035,-122.377,"Penn Cove", "9447929"),
+        new Station(48.22,-122.69,"Penn Cove", "9447929"),
         new Station(48.52,-122.62,"Anacortes", "9448794"),
         new Station(48.545,-123.01,"Friday Harbor", "9449880"),
         new Station(48.69,-123.04,"Waldron Island", "9449746"),
