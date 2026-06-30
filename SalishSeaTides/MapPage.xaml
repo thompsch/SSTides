@@ -17,63 +17,54 @@
                                   ShowMarkerTooltip="True"
                                   behaviors:MarkerCommand.Command="{Binding MarkerSelectedCommand}">
                     <map:MapTileLayer.MarkerTemplate>
-                        <DataTemplate>
-                            <!-- 1. Define anchor points so Syncfusion knows the Ellipse is at the absolute left-center (0.0, 0.5) -->
-                            <!-- WidthRequest="300" ensures long text fields have plenty of room to stretch to the right -->
-                            <Grid HorizontalOptions="Center" VerticalOptions="Center">
-            <Grid.ColumnDefinitions>
-                <!-- Column 0: Left Spacer (Matches the exact width of your Label block dynamically) -->
-                <ColumnDefinition Width="*" />
-                <!-- Column 1: The true center anchor point where your Ellipse lives -->
-                <ColumnDefinition Width="16" />
-                <!-- Column 2: Right Content (Matches the exact width of your Label block dynamically) -->
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <!-- 1. THE ANCHOR POINT (Locked strictly to the center column) --> 
-            <!-- Because Column 0 and Column 2 use proportional '*' sizing, Column 1 is always forced precisely onto the map coordinate -->
-            <Ellipse Grid.Column="1"
-                     Fill="{StaticResource PrimaryDark}" 
-                     Stroke="{StaticResource HighTide}" 
-                     StrokeThickness="1" 
-                     WidthRequest="16" 
-                     HeightRequest="16" 
-                     HorizontalOptions="Center" 
-                     VerticalOptions="Center"/> 
-                     
-            <!-- 2. THE VISIBLE TEXT LABEL (Sits in Column 2, expanding outward to the right) --> 
-            <Border Grid.Column="2"
-                    Stroke="Black" 
-                    StrokeThickness="0" 
-                    BackgroundColor="{StaticResource LowTide}" 
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
-                    Margin="6,0,0,0"> 
-                <Border.StrokeShape> 
-                    <RoundRectangle CornerRadius="2"/> 
-                </Border.StrokeShape> 
-                <!-- Text will grow seamlessly without truncation since its column is set to '*' -->
-                <Label Text="{Binding Label}" 
-                       TextColor="{StaticResource PrimaryDark}" 
-                       FontAttributes="Bold" 
-                       FontSize="11" 
-                       HorizontalOptions="Start" 
-                       VerticalOptions="Center" /> 
-            </Border> 
-
-            <!-- 3. THE INVISIBLE BALANCE SPACER (Sits in Column 0) -->
-            <!-- This ghost label mirrors the exact text bounds on the left side, forcing the Grid to expand equally in both directions -->
-            <!-- This ensures the center point of the Grid never leaves the center of the Ellipse -->
-            <Label Grid.Column="0"
-                   Text="{Binding Label}" 
-                   FontSize="11" 
-                   Opacity="0" 
-                   InputTransparent="True"
-                   HorizontalOptions="End" 
-                   VerticalOptions="Center"
-                   Margin="-4,0,6,0" />
-                   </Grid>
-                        </DataTemplate>
+<DataTemplate>
+        <!-- 1. The Fixed Anchor Core -->
+        <!-- Forcing a 1x1 pixel size guarantees Syncfusion anchors this exact spot to the map. -->
+        <!-- Since the parent size is fixed at 1px, text length can NEVER shift this grid. -->
+        <Grid HorizontalOptions="Center" 
+              VerticalOptions="Center"
+              WidthRequest="1"
+              HeightRequest="1"
+              IsClippedToBounds="False"> 
+            
+            <!-- 2. The Absolute Flow Layout Container -->
+            <!-- We shift this layout left by exactly half the Ellipse width (8px) using a negative margin. -->
+            <!-- This ensures the true center of the 16px Ellipse aligns perfectly with our 1px anchor core. -->
+            <HorizontalStackLayout VerticalOptions="Center"
+                                   Spacing="6"
+                                   Margin="-8,0,0,0"
+                                   IsClippedToBounds="False">
+                
+                <!-- 3. THE ANCHOR POINT (Stays perfectly fixed on its true map spot) --> 
+                <Ellipse Fill="{StaticResource PrimaryDark}" 
+                         Stroke="{StaticResource Primary}" 
+                         StrokeThickness="1" 
+                         WidthRequest="16" 
+                         HeightRequest="16" 
+                         VerticalOptions="Center"/> 
+                         
+                <!-- 4. THE VISIBLE TEXT LABEL (Dynamic width, zero truncation) --> 
+                <!-- Because it has no WidthRequest, it hugs the text length perfectly. -->
+                <!-- Because the root grid size is locked at 1px, long words will never push the Ellipse. -->
+                <Border Stroke="Black" 
+                        StrokeThickness="0" 
+                        BackgroundColor="{StaticResource LowTide}" 
+                        VerticalOptions="Center"> 
+                    <Border.StrokeShape> 
+                        <RoundRectangle CornerRadius="2"/> 
+                    </Border.StrokeShape> 
+                    <Label Text="{Binding Label}" 
+                           TextColor="{StaticResource PrimaryDark}" 
+                           FontAttributes="Bold" 
+                           FontSize="11" 
+                           LineBreakMode="NoWrap"
+                           HeightRequest="16"
+                           VerticalOptions="Center" /> 
+                </Border> 
+                
+            </HorizontalStackLayout>
+        </Grid>
+    </DataTemplate>
                     </map:MapTileLayer.MarkerTemplate>
                     <map:MapTileLayer.ZoomPanBehavior>
                         <map:MapZoomPanBehavior ZoomLevel="9"
